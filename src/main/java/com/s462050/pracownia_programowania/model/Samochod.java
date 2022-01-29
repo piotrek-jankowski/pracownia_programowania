@@ -24,7 +24,6 @@ public class Samochod {
     private boolean uzywany;
     @ManyToOne
     private TypLakieru typLakieru;
-    @OneToMany
-    @JoinColumn(name = "kolory_id")
-    private Set<Kolory> kolory;
+    @ManyToOne
+    private Kolory kolory;
 }
