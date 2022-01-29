@@ -5,6 +5,7 @@ import com.s462050.pracownia_programowania.repository.KoloryRepository;
 import com.s462050.pracownia_programowania.service.KoloryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.events.Event;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -26,12 +27,13 @@ public class KoloryServiceImpl implements KoloryService {
 
     @Override
     public Optional<Kolory> findById(Long id) {
-        return Optional.empty();
+        return koloryRepository.findById(id);
     }
 
     @Override
     public Kolory save(Kolory kolory) {
-        return null;
+
+        return koloryRepository.save(kolory);
     }
 
     @Override
