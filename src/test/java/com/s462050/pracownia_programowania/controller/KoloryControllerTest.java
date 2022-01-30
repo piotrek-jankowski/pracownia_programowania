@@ -56,6 +56,19 @@ class KoloryControllerTest {
 
     @Test
     void deleteKolor() {
+        given()
+                .pathParam("id", 1)
+                .delete(uri + "/kolory/{id}")
+                .prettyPeek()
+                .then()
+                .statusCode(200);
+
+        given()
+                .pathParam("id", 1)
+                .delete(uri + "/kolory/{id}")
+                .prettyPeek()
+                .then()
+                .statusCode(404);
     }
 
     @Test
