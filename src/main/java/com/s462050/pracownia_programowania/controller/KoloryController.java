@@ -62,4 +62,16 @@ public class KoloryController {
         Kolory updatedKolor = this.koloryService.update(id, kolor);
         return new ResponseEntity<>(updatedKolor, HttpStatus.OK);
     }
+
+    @GetMapping("/export")
+    public ResponseEntity<String> exportData() throws JsonProcessingException {
+        String data = koloryService.exportdata();
+        return ResponseEntity.ok().body(data);
+    }
+
+    @PostMapping("/import")
+    public ResponseEntity<String> importData(@RequestBody String data) throws JsonProcessingException {
+        koloryService.importdata(data);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

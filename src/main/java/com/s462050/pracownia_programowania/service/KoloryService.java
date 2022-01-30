@@ -16,4 +16,8 @@ public interface KoloryService {
     Kolory update(Long id, Kolory kolory);
 
     void delete(Long id);
+
+    String exportdata() throws JsonProcessingException;
+
+    void importdata(String data) throws JsonProcessingException;
 }
