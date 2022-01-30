@@ -1,5 +1,6 @@
 package com.s462050.pracownia_programowania.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.s462050.pracownia_programowania.model.Kolory;
 
 import java.util.List;
