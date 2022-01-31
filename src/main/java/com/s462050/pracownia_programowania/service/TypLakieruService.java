@@ -1,5 +1,6 @@
 package com.s462050.pracownia_programowania.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.s462050.pracownia_programowania.model.TypLakieru;
 
 import java.util.List;
@@ -15,4 +16,8 @@ public interface TypLakieruService {
     TypLakieru update(Long id, TypLakieru typLakieru);
 
     void delete(Long id);
+
+    String exportdata() throws JsonProcessingException;
+
+    void importdata(String data) throws JsonProcessingException;
 }

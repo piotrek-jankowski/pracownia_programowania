@@ -1,5 +1,9 @@
 package com.s462050.pracownia_programowania.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.s462050.pracownia_programowania.model.TypLakieru;
 import com.s462050.pracownia_programowania.model.TypLakieru;
 import com.s462050.pracownia_programowania.repository.TypLakieruRepository;
 import com.s462050.pracownia_programowania.service.TypLakieruService;
@@ -37,11 +41,27 @@ public class TypLakieruServiceImpl implements TypLakieruService {
 
     @Override
     public TypLakieru update(Long id, TypLakieru typLakieru) {
-        return null;
+        return typLakieruRepository.save(typLakieru);
     }
 
     @Override
     public void delete(Long id) {
         typLakieruRepository.deleteById(id);
+    }
+
+    @Override
+    public String exportdata() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<TypLakieru> typLakieru = typLakieruRepository.findAll();
+        return objectMapper.writeValueAsString(typLakieru);
+    }
+
+    @Override
+    public void importdata(String data) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<TypLakieru> typLakieru = objectMapper.readValue(data, new TypeReference<List<TypLakieru>>() {});
+        for(TypLakieru typLakier: typLakieru){
+            typLakieruRepository.save(typLakier);
+        }
     }
 }

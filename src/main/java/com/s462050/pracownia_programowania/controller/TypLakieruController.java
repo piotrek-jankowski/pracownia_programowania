@@ -1,5 +1,7 @@
 package com.s462050.pracownia_programowania.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.s462050.pracownia_programowania.model.TypLakieru;
 import com.s462050.pracownia_programowania.model.TypLakieru;
 import com.s462050.pracownia_programowania.service.TypLakieruService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,28 @@ public class TypLakieruController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         this.typLakieruService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TypLakieru> updateTypLakier(@PathVariable("id") Long id, @RequestBody TypLakieru typLakier) {
+        Optional<TypLakieru> isttypLakier = typLakieruService.findById(id);
+        if (isttypLakier.isEmpty()){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        TypLakieru updatedTypLakier = this.typLakieruService.update(id, typLakier);
+        return new ResponseEntity<>(updatedTypLakier, HttpStatus.OK);
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<String> exportData() throws JsonProcessingException {
+        String data = typLakieruService.exportdata();
+        return ResponseEntity.ok().body(data);
+    }
+
+    @PostMapping("/import")
+    public ResponseEntity<String> importData(@RequestBody String data) throws JsonProcessingException {
+        typLakieruService.importdata(data);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,5 +1,9 @@
 package com.s462050.pracownia_programowania.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.s462050.pracownia_programowania.model.Samochod;
 import com.s462050.pracownia_programowania.model.Samochod;
 import com.s462050.pracownia_programowania.repository.SamochodRepository;
 import com.s462050.pracownia_programowania.service.SamochodService;
@@ -37,11 +41,27 @@ public class SamochodServiceImpl implements SamochodService {
 
     @Override
     public Samochod update(Long id, Samochod samochod) {
-        return null;
+        return samochodRepository.save(samochod);
     }
 
     @Override
     public void delete(Long id) {
         samochodRepository.deleteById(id);
+    }
+
+    @Override
+    public String exportdata() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Samochod> samochod = samochodRepository.findAll();
+        return objectMapper.writeValueAsString(samochod);
+    }
+
+    @Override
+    public void importdata(String data) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Samochod> samochod = objectMapper.readValue(data, new TypeReference<List<Samochod>>() {});
+        for(Samochod Samochod1: samochod){
+            samochodRepository.save(Samochod1);
+        }
     }
 }

@@ -1,5 +1,9 @@
 package com.s462050.pracownia_programowania.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.s462050.pracownia_programowania.model.Kierowcy;
 import com.s462050.pracownia_programowania.model.Kierowcy;
 import com.s462050.pracownia_programowania.repository.KierowcyRepository;
 import com.s462050.pracownia_programowania.service.KierowcyService;
@@ -37,11 +41,28 @@ public class KierowcyServiceImpl implements KierowcyService {
 
     @Override
     public Kierowcy update(Long id, Kierowcy kierowcy) {
-        return null;
+        return kierowcyRepository.save(kierowcy);
     }
 
     @Override
     public void delete(Long id) {
         kierowcyRepository.deleteById(id);
+    }
+
+
+    @Override
+    public String exportdata() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Kierowcy> kierowcy = kierowcyRepository.findAll();
+        return objectMapper.writeValueAsString(kierowcy);
+    }
+
+    @Override
+    public void importdata(String data) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Kierowcy> kierowcy = objectMapper.readValue(data, new TypeReference<List<Kierowcy>>() {});
+        for(Kierowcy kierowca: kierowcy){
+            kierowcyRepository.save(kierowca);
+        }
     }
 }

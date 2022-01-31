@@ -1,5 +1,7 @@
 package com.s462050.pracownia_programowania.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.s462050.pracownia_programowania.model.Samochod;
 import com.s462050.pracownia_programowania.model.Samochod;
 import com.s462050.pracownia_programowania.service.SamochodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,28 @@ public class SamochodController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         this.samochodService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Samochod> updateSamochod1(@PathVariable("id") Long id, @RequestBody Samochod samochod1) {
+        Optional<Samochod> istsamochod1 = samochodService.findById(id);
+        if (istsamochod1.isEmpty()){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        Samochod updatedSamochod1 = this.samochodService.update(id, samochod1);
+        return new ResponseEntity<>(updatedSamochod1, HttpStatus.OK);
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<String> exportData() throws JsonProcessingException {
+        String data = samochodService.exportdata();
+        return ResponseEntity.ok().body(data);
+    }
+
+    @PostMapping("/import")
+    public ResponseEntity<String> importData(@RequestBody String data) throws JsonProcessingException {
+        samochodService.importdata(data);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

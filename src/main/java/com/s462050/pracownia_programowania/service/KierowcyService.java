@@ -1,5 +1,6 @@
 package com.s462050.pracownia_programowania.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.s462050.pracownia_programowania.model.Kierowcy;
 
 import java.util.List;
@@ -15,4 +16,8 @@ public interface KierowcyService {
     Kierowcy update(Long id, Kierowcy kierowcy);
 
     void delete(Long id);
+
+    String exportdata() throws JsonProcessingException;
+
+    void importdata(String data) throws JsonProcessingException;
 }

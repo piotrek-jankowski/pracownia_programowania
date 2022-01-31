@@ -1,5 +1,7 @@
 package com.s462050.pracownia_programowania.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.s462050.pracownia_programowania.model.Kierowcy;
 import com.s462050.pracownia_programowania.model.Kierowcy;
 import com.s462050.pracownia_programowania.service.KierowcyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,27 @@ public class KierowcyController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         this.kierowcyService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Kierowcy> updateKierowca(@PathVariable("id") Long id, @RequestBody Kierowcy kierowca) {
+        Optional<Kierowcy> istkierowca = kierowcyService.findById(id);
+        if (istkierowca.isEmpty()){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        Kierowcy updatedKierowca = this.kierowcyService.update(id, kierowca);
+        return new ResponseEntity<>(updatedKierowca, HttpStatus.OK);
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<String> exportData() throws JsonProcessingException {
+        String data = kierowcyService.exportdata();
+        return ResponseEntity.ok().body(data);
+    }
+
+    @PostMapping("/import")
+    public ResponseEntity<String> importData(@RequestBody String data) throws JsonProcessingException {
+        kierowcyService.importdata(data);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
