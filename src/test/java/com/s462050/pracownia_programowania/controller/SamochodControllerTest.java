@@ -1,6 +1,6 @@
 package com.s462050.pracownia_programowania.controller;
 
-import com.s462050.pracownia_programowania.model.Kolory;
+import com.s462050.pracownia_programowania.model.Samochod;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,11 +11,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import javax.annotation.PostConstruct;
 
 import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class KoloryControllerTest {
+class SamochodControllerTest {
     @LocalServerPort
     private int port;
 
@@ -28,49 +28,51 @@ class KoloryControllerTest {
 
     @Test
     void findAll() {
-        RestAssured.get(uri + "/kolory/")
+        RestAssured.get(uri + "/samochod/")
                 .then()
                 .statusCode(200);
     }
 
     @Test
-    void findKolor() {
+    void findSamochod1() {
         given()
                 .pathParam("id", 1)
-                .get(uri + "/kolory/{id}")
+                .get(uri + "/samochod/{id}")
                 .prettyPeek()
                 .then()
                 .statusCode(200);
     }
 
     @Test
-    void addKolor() {
-        Kolory kolory = new Kolory();
-        kolory.setNazwaKoloru("Testowy");
-        Kolory nowyKolor = given()
+    void addSamochod1() {
+        Samochod samochod = new Samochod();
+        samochod.setModel("Volkswagen");
+        samochod.setMarka("Polo");
+        samochod.setUzywany(true);
+        Samochod nowySamochod1 = given()
                 .when()
                 .contentType(String.valueOf(MediaType.APPLICATION_JSON))
-                .body(kolory)
-                .post(uri + "/kolory/")
+                .body(samochod)
+                .post(uri + "/samochod/")
                 .then()
                 .statusCode(201)
-                .extract().body().as(Kolory.class);
-        assertNotNull(nowyKolor);
-        assertNotNull(nowyKolor.getID());
+                .extract().body().as(Samochod.class);
+        assertNotNull(nowySamochod1);
+        assertNotNull(nowySamochod1.getID());
     }
 
     @Test
-    void deleteKolor() {
+    void deleteSamochod1() {
         given()
                 .pathParam("id", 1)
-                .delete(uri + "/kolory/{id}")
+                .delete(uri + "/samochod/{id}")
                 .prettyPeek()
                 .then()
                 .statusCode(200);
 
         given()
                 .pathParam("id", 1)
-                .delete(uri + "/kolory/{id}")
+                .delete(uri + "/samochod/{id}")
                 .prettyPeek()
                 .then()
                 .statusCode(404);
